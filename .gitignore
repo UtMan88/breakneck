@@ -1,2 +1,4 @@
+*.o
 *.pyc
 a.out
+breakneck
