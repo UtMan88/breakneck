@@ -68,25 +68,30 @@ class Elevator final {
         return boost::make_optional(std::abs(dist));
     }
 
-    void move(const Direction& dir) {
-        switch (dir) {
-          case Direction::Up:
-            // std::this_thread::sleep_for(std::chrono::seconds(1));
-            ++mFloorNum;
-            break;
-          case Direction::Down:
-            // std::this_thread::sleep_for(std::chrono::seconds(1));
-            --mFloorNum;
-            break;
-          case Direction::Maintenance:
-          case Direction::Stand:
-            break;
+    void moveTo(int destFloor, const Direction& dir) {
+        mDirection = dir;
+        for (; destFloor < mFloorNum;) {
+            switch (mDirection) {
+              case Direction::Up:
+                // std::this_thread::sleep_for(std::chrono::seconds(1));
+                ++mFloorNum;
+                break;
+              case Direction::Down:
+                // std::this_thread::sleep_for(std::chrono::seconds(1));
+                --mFloorNum;
+                break;
+              case Direction::Maintenance:
+              case Direction::Stand:
+                assert(destFloor == mFloorNum && "Cannot move in Stand/Maintenance");
+                break;
+              default:
+                assert(false);
+            }
         }
         assert(validFloor(mFloorNum) && "Cannot move to floor");
     }
 
     void openDoor() {
-        //std::cout << mId << ": Opening door on floor " << mFloorNum << '\n';
         std::lock_guard<std::mutex> guard(::ioMutex);
         std::cout << mId << ": " << mFloorNum << '\n';
         //std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -110,13 +115,9 @@ class Elevator final {
             mNextFloorQueue.erase(mNextFloorQueue.cbegin());
             guard.unlock();
             if (destFloor < mFloorNum) {
-                mDirection = Direction::Down;
-                for (; destFloor < mFloorNum; move(mDirection));
+                moveTo(destFloor, Direction::Down);
             } else if (destFloor > mFloorNum) {
-                mDirection = Direction::Up;
-                for (; destFloor > mFloorNum; move(mDirection));
-            } else {
-                mDirection = Direction::Stand;
+                moveTo(destFloor, Direction::Up);
             }
             openDoor();
         }
@@ -238,7 +239,7 @@ class ElevatorScheduler {
             auto* elev = pair.second;
             if (dir != elev->getDirection()) {
                 return false;
-                }
+            }
             return static_cast<bool>(elev->addFloorIfInPath(floorNum));
         });
         if (itr != pairs.end()) {
