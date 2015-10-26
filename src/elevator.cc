@@ -98,8 +98,12 @@ void Elevator::goToFloor(int num) {
     mCondVar.notify_one();
 }
 
-void Elevator::moveTo(int destFloor, const Direction& dir) {
-    mDirection = dir;
+void Elevator::moveTo(int destFloor) {
+    if (destFloor < mFloorNum) {
+        mDirection = Direction::Down;
+    } else if (destFloor > mFloorNum) {
+        mDirection = Direction::Up;
+    }
     for (; destFloor != mFloorNum;) {
         switch (mDirection) {
           case Direction::Up:
@@ -139,11 +143,7 @@ void Elevator::start() {
         auto destFloor = mNextFloorQueue.front();
         mNextFloorQueue.erase(mNextFloorQueue.cbegin());
         guard.unlock();
-        if (destFloor < mFloorNum) {
-            moveTo(destFloor, Direction::Down);
-        } else if (destFloor > mFloorNum) {
-            moveTo(destFloor, Direction::Up);
-        }
+        moveTo(destFloor);
         openDoor();
     }
 }

@@ -34,7 +34,7 @@ class Elevator final {
 
     void goToFloor(int num);
 
-    void moveTo(int destFloor, const Direction& dir);
+    void moveTo(int destFloor);
 
     void openDoor();
 
