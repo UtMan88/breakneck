@@ -2,7 +2,7 @@
 #include <elevator_bank_panel.hh>
 #include <elevator_scheduler.hh>
 
-ElevatorBankPanel::ElevatorBankPanel(int floorNum, ElevatorScheduler* const scheduler)
+ElevatorBankPanel::ElevatorBankPanel(int floorNum, ElevatorScheduler* scheduler)
     : mFloorNum(floorNum), mElevatorScheduler(scheduler) {
     assert(scheduler && "ElevatorScheduler cannot be null");
 }

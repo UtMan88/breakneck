@@ -60,7 +60,7 @@ class Elevator final {
     boost::optional<FloorDiffType> addFloorIfInPath(int destFloor);
 
     boost::optional<FloorDiffType>
-    distToFloor(const int num, const Direction&) const;
+    distToFloor(int num, const Direction&) const;
 
     Direction getDirection() const;
 };

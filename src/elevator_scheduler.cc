@@ -7,7 +7,7 @@ typedef std::pair<Elevator::FloorDiffType, Elevator*> DiffElevPair;
 
 std::vector<DiffElevPair> sortByNearest(
       const std::vector<std::unique_ptr<Elevator>>& elevators,
-      const int floorNum, const Elevator::Direction& dir) {
+      int floorNum, const Elevator::Direction& dir) {
     std::vector<DiffElevPair> pairs;
     std::for_each(elevators.cbegin(), elevators.cend(),
                   [&](const std::unique_ptr<Elevator>& elev) {

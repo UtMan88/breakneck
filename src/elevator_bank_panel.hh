@@ -10,7 +10,7 @@ class ElevatorBankPanel {
   public:
     enum class Direction { Up, Down };
 
-    ElevatorBankPanel(int floorNum, ElevatorScheduler* const);
+    ElevatorBankPanel(int floorNum, ElevatorScheduler*);
 
     bool pushButton(const Direction& dir);
 };

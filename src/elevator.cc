@@ -75,7 +75,7 @@ Elevator::distToQueuedFloor(int num) const {
 }
 
 boost::optional<Elevator::FloorDiffType>
-Elevator::distToFloor(const int num, const Direction& dir) const {
+Elevator::distToFloor(int num, const Direction& dir) const {
     using boost::make_optional;
     switch (dir) {
       case Direction::Up:
