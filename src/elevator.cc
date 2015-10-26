@@ -16,8 +16,8 @@ Elevator::Elevator(int id, int startFloor, int minFloor, int maxFloor)
 Elevator::~Elevator() {
     std::unique_lock<std::mutex> guard(mMutex);
     mJoinThread = true;
+    guard.unlock();
     mCondVar.notify_one();
-    mCondVar.wait(guard);
     mThread.join();
 }
 
@@ -85,10 +85,10 @@ int Elevator::getLastQueuedFloor() const {
 
 void Elevator::goToFloor(int num) {
     auto floor = getLastQueuedFloor();
-    std::unique_lock<std::mutex> guard(mMutex);
     std::unique_lock<std::mutex> ioGuard(::ioMutex);
     std::cout << mId << ": " << floor << " -> " << num << '\n';
     ioGuard.unlock();
+    std::unique_lock<std::mutex> guard(mMutex);
     mNextFloorQueue.emplace_back(num);
     std::sort(mNextFloorQueue.begin(), mNextFloorQueue.end());
     guard.unlock();
@@ -132,7 +132,6 @@ void Elevator::start() {
         if (mJoinThread) {
             break;
         }
-        // TODO: should probably create a queue from two vectors
         assert(mNextFloorQueue.size() > 0 && "Queue cannot be empty");
         auto destFloor = mNextFloorQueue.front();
         mNextFloorQueue.erase(mNextFloorQueue.cbegin());
@@ -144,7 +143,6 @@ void Elevator::start() {
         }
         openDoor();
     }
-    mCondVar.notify_one();
 }
 
 inline bool Elevator::validFloor(int num) const {
