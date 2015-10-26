@@ -11,7 +11,6 @@ Elevator::Elevator(int id, int startFloor, int minFloor, int maxFloor)
     , mMaxFloor(maxFloor) , mDirection(Direction::Stand) {
     assert(minFloor < maxFloor && "minFloor must be less than maxFloor");
     assert(validFloor(startFloor) && "startFloor not within range");
-        mNextFloorQueue.reserve(static_cast<Queue::size_type>(maxFloor-minFloor));
 }
 
 Elevator::~Elevator() {
@@ -98,7 +97,7 @@ void Elevator::goToFloor(int num) {
 
 void Elevator::moveTo(int destFloor, const Direction& dir) {
     mDirection = dir;
-    for (; destFloor < mFloorNum;) {
+    for (; destFloor != mFloorNum;) {
         switch (mDirection) {
           case Direction::Up:
             // std::this_thread::sleep_for(std::chrono::seconds(1));
