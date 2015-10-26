@@ -1,6 +1,7 @@
 #ifndef ELEVATOR_HH
 #define ELEVATOR_HH
 
+#include <atomic>
 #include <condition_variable>
 #include <thread>
 #include <vector>

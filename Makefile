@@ -18,7 +18,7 @@ CXXFLAGS=-fexceptions \
 	 -x c++
 INCDIRS=-Isrc
 SOURCES=src/elevator.cc \
-       	src/elevator_bank_panel.cc \
+	src/elevator_bank_panel.cc \
 	src/elevator_scheduler.cc \
 	src/main.cc
 OBJECTS=$(SOURCES:.cc=.o)

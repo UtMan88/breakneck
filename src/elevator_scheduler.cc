@@ -1,7 +1,27 @@
 #include <cstdlib>
 #include <elevator_scheduler.hh>
 
+namespace {
+
 typedef std::pair<Elevator::FloorDiffType, Elevator*> DiffElevPair;
+
+std::vector<DiffElevPair> sortByNearest(
+      const std::vector<std::unique_ptr<Elevator>>& elevators,
+      int floorNum) {
+    std::vector<DiffElevPair> pairs;
+    std::for_each(elevators.cbegin(), elevators.cend(),
+                  [&](const std::unique_ptr<Elevator>& elev) {
+        auto dist = std::abs(elev->getLastQueuedFloor() - floorNum);
+        pairs.push_back(std::make_pair(dist, elev.get()));
+    });
+    std::sort(pairs.begin(), pairs.end(),
+              [](const DiffElevPair& p1, const DiffElevPair& p2) {
+        return p1.first < p2.first;
+    });
+    return pairs;
+}
+
+} // end namespace
 
 ElevatorScheduler::ElevatorScheduler() {
     mElevators.emplace_back(new Elevator(1, 1, 1, 32));
@@ -12,7 +32,7 @@ ElevatorScheduler::ElevatorScheduler() {
 }
 
 bool ElevatorScheduler::requestElevator(int floorNum, const Elevator::Direction& dir) {
-    auto pairs = sortByNearest(floorNum);
+    auto pairs = ::sortByNearest(mElevators, floorNum);
     auto itr = std::find_if(pairs.begin(), pairs.end(), [&](DiffElevPair& pair) {
         auto* elev = pair.second;
         if (dir != elev->getDirection()) {
@@ -27,19 +47,4 @@ bool ElevatorScheduler::requestElevator(int floorNum, const Elevator::Direction&
         return static_cast<bool>(pair.second->addFloor(floorNum, false));
     });
     return itr != pairs.end();
-}
-
-std::vector<DiffElevPair>
-ElevatorScheduler::sortByNearest(int floorNum) const {
-    std::vector<DiffElevPair> elevators;
-    std::for_each(mElevators.cbegin(), mElevators.cend(),
-                  [&](const std::unique_ptr<Elevator>& elev) {
-        auto dist = std::abs(elev->getLastQueuedFloor() - floorNum);
-        elevators.push_back(std::make_pair(dist, elev.get()));
-    });
-    std::sort(elevators.begin(), elevators.end(),
-              [](const DiffElevPair& p1, const DiffElevPair& p2) {
-        return p1.first < p2.first;
-    });
-    return elevators;
 }

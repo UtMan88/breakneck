@@ -14,9 +14,6 @@ class ElevatorScheduler {
 
     std::vector<std::unique_ptr<Elevator>> mElevators;
 
-  private:
-    std::vector<DiffElevPair> sortByNearest(int floorNum) const;
-
   public:
     ElevatorScheduler();
 
