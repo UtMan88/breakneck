@@ -7,12 +7,14 @@ typedef std::pair<Elevator::FloorDiffType, Elevator*> DiffElevPair;
 
 std::vector<DiffElevPair> sortByNearest(
       const std::vector<std::unique_ptr<Elevator>>& elevators,
-      int floorNum) {
+      const int floorNum, const Elevator::Direction& dir) {
     std::vector<DiffElevPair> pairs;
     std::for_each(elevators.cbegin(), elevators.cend(),
                   [&](const std::unique_ptr<Elevator>& elev) {
-        auto dist = std::abs(elev->getLastQueuedFloor() - floorNum);
-        pairs.push_back(std::make_pair(dist, elev.get()));
+        auto dist = elev->distToFloor(floorNum, dir);
+        if (dist && *dist >= 0) {
+            pairs.emplace_back(*dist, elev.get());
+        }
     });
     std::sort(pairs.begin(), pairs.end(),
               [](const DiffElevPair& p1, const DiffElevPair& p2) {
@@ -32,7 +34,7 @@ ElevatorScheduler::ElevatorScheduler() {
 }
 
 bool ElevatorScheduler::requestElevator(int floorNum, const Elevator::Direction& dir) {
-    auto pairs = ::sortByNearest(mElevators, floorNum);
+    auto pairs = ::sortByNearest(mElevators, floorNum, dir);
     auto itr = std::find_if(pairs.begin(), pairs.end(), [&](DiffElevPair& pair) {
         auto* elev = pair.second;
         if (dir != elev->getDirection()) {

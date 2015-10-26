@@ -74,20 +74,23 @@ Elevator::distToQueuedFloor(int num) const {
     return boost::make_optional(std::abs(dist));
 }
 
-int Elevator::getLastQueuedFloor() const {
-    std::unique_lock<std::mutex> guard(mMutex);
-    if (mNextFloorQueue.size() > 0) {
-        return mNextFloorQueue.back();
-    } else {
-        return mFloorNum;
+boost::optional<Elevator::FloorDiffType>
+Elevator::distToFloor(const int num, const Direction& dir) const {
+    using boost::make_optional;
+    switch (dir) {
+      case Direction::Up:
+          return make_optional(static_cast<FloorDiffType>(num - mFloorNum));
+      case Direction::Down:
+          return make_optional(static_cast<FloorDiffType>(mFloorNum - num));
+      case Direction::Stand:
+      case Direction::Maintenance:
+          return boost::none;
+      default:
+          assert(false);
     }
 }
 
 void Elevator::goToFloor(int num) {
-    auto floor = getLastQueuedFloor();
-    std::unique_lock<std::mutex> ioGuard(::ioMutex);
-    std::cout << mId << ": " << floor << " -> " << num << '\n';
-    ioGuard.unlock();
     std::unique_lock<std::mutex> guard(mMutex);
     mNextFloorQueue.emplace_back(num);
     std::sort(mNextFloorQueue.begin(), mNextFloorQueue.end());

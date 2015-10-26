@@ -3,4 +3,6 @@
 *.pyc
 a.out
 breakneck
+Session.vim
 /.vagrant
+

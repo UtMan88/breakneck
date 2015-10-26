@@ -24,6 +24,7 @@ class Elevator final {
     typedef std::vector<int> Queue;
     typedef Queue::difference_type FloorDiffType;
   private:
+    // TODO: remove, it can be derived from getDistanceTo
     Direction mDirection;
 
     Queue mNextFloorQueue; // INVARIANT must always be sorted
@@ -58,9 +59,10 @@ class Elevator final {
 
     boost::optional<FloorDiffType> addFloorIfInPath(int destFloor);
 
-    Direction getDirection() const;
+    boost::optional<FloorDiffType>
+    distToFloor(const int num, const Direction&) const;
 
-    int getLastQueuedFloor() const;
+    Direction getDirection() const;
 };
 
 inline Elevator::Direction Elevator::getDirection() const {
