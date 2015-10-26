@@ -19,14 +19,12 @@ class Elevator final {
     const int mMaxFloor;
 
   public:
-    enum class Direction { Up, Down, Stand, Maintenance };
-
     typedef std::vector<int> Queue;
     typedef Queue::difference_type FloorDiffType;
-  private:
-    // TODO: remove, it can be derived from getDistanceTo
-    Direction mDirection;
+    enum class Direction { Up, Down, Stand, Maintenance };
 
+  private:
+    Direction mDirection;
     Queue mNextFloorQueue; // INVARIANT must always be sorted
 
   private:
