@@ -10,7 +10,7 @@
 class Elevator final {
     std::condition_variable mCondVar;
     mutable std::mutex mMutex;
-    bool mJoinThread;
+    std::atomic_bool mJoinThread;
     std::thread mThread;
 
     const int mId;

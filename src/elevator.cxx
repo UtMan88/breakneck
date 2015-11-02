@@ -135,11 +135,15 @@ void Elevator::openDoor() {
 void Elevator::start() {
     for (;;) {
         std::unique_lock<std::mutex> guard(mMutex);
-        mCondVar.wait(guard);
-        if (mJoinThread) {
-            break;
+        if (mNextFloorQueue.empty()) {
+            mCondVar.wait(guard);
         }
-        assert(mNextFloorQueue.size() > 0 && "Queue cannot be empty");
+        if (mJoinThread) {
+            return;
+        }
+        if (mNextFloorQueue.size() < 1) {
+            continue;
+        }
         auto destFloor = mNextFloorQueue.front();
         mNextFloorQueue.erase(mNextFloorQueue.cbegin());
         guard.unlock();
