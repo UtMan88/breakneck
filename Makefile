@@ -27,17 +27,23 @@ EXECUTABLE=breakneck
 
 all: $(SOURCES) release
 
-common: $(OBJECTS)
+$(EXECUTABLE): $(OBJECTS)
 	$(CXX) $(OBJECTS) -o $(EXECUTABLE)
 
 debug: CXXFLAGS+=-g
-debug: common
+debug: $(EXECUTABLE)
 
 release: CXXFLAGS+=-DNDEBUG
-release: common
+release: $(EXECUTABLE)
 
-.cc.o:
-	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
+-include $(SOURCES:.cc=.d)
+%.o: %.cc
+	$(CXX) $(CXXFLAGS) $(INCDIRS) -MD -c $< -o $@
 
 clean:
 	rm -rf src/*.o $(EXECUTABLE) $(EXECUTABLE).dSYM
+
+cleandepend:
+	rm -rf src/*.d
+
+.PHONY: all debug release clean cleandepend
