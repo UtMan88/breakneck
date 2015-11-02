@@ -18,11 +18,11 @@ CXXFLAGS=-fexceptions \
 	 -x c++
 INCDIRS=-Isrc
 MAKEFLAGS=-j
-SOURCES=src/elevator.cc \
-	src/elevator_bank_panel.cc \
-	src/elevator_scheduler.cc \
-	src/main.cc
-OBJECTS=$(SOURCES:.cc=.o)
+SOURCES=src/elevator.cxx \
+	src/elevator_bank_panel.cxx \
+	src/elevator_scheduler.cxx \
+	src/main.cxx
+OBJECTS=$(SOURCES:.cxx=.o)
 EXECUTABLE=breakneck
 
 all: $(SOURCES) release
@@ -36,8 +36,8 @@ debug: $(EXECUTABLE)
 release: CXXFLAGS+=-DNDEBUG
 release: $(EXECUTABLE)
 
--include $(SOURCES:.cc=.d)
-%.o: %.cc
+-include $(SOURCES:.cxx=.d)
+%.o: %.cxx
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -MD -c $< -o $@
 
 clean:

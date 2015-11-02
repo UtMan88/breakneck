@@ -1,5 +1,5 @@
-#ifndef ELEVATOR_HH
-#define ELEVATOR_HH
+#ifndef ELEVATOR_H
+#define ELEVATOR_H
 
 #include <atomic>
 #include <condition_variable>
@@ -67,4 +67,4 @@ inline Elevator::Direction Elevator::getDirection() const {
     return mDirection;
 }
 
-#endif // ELEVATOR_HH
+#endif // ELEVATOR_H

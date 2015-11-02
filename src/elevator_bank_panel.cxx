@@ -1,6 +1,6 @@
-#include <elevator.hh>
-#include <elevator_bank_panel.hh>
-#include <elevator_scheduler.hh>
+#include <elevator.h>
+#include <elevator_bank_panel.h>
+#include <elevator_scheduler.h>
 
 ElevatorBankPanel::ElevatorBankPanel(int floorNum, ElevatorScheduler* scheduler)
     : mFloorNum(floorNum), mElevatorScheduler(scheduler) {

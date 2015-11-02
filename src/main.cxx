@@ -1,6 +1,6 @@
 #include <random>
-#include <elevator_bank_panel.hh>
-#include <elevator_scheduler.hh>
+#include <elevator_bank_panel.h>
+#include <elevator_scheduler.h>
 
 int main(int argc, char** argv) {
     // Order is important, vector must be destroyed before ElevatorScheduler!

@@ -1,5 +1,5 @@
-#ifndef ELEVATOR_BANK_PANEL_HH
-#define ELEVATOR_BANK_PANEL_HH
+#ifndef ELEVATOR_BANK_PANEL_H
+#define ELEVATOR_BANK_PANEL_H
 
 class ElevatorScheduler;
 
@@ -14,4 +14,4 @@ class ElevatorBankPanel {
 
     bool pushButton(const Direction& dir);
 };
-#endif // ELEVATOR_BANK_PANEL_HH
+#endif // ELEVATOR_BANK_PANEL_H

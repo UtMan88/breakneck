@@ -1,8 +1,8 @@
-#ifndef ELEVATOR_SCHEDULER_HH
-#define ELEVATOR_SCHEDULER_HH
+#ifndef ELEVATOR_SCHEDULER_H
+#define ELEVATOR_SCHEDULER_H
 
 #include <vector>
-#include <elevator.hh>
+#include <elevator.h>
 
 class ElevatorScheduler {
     // struct ElevatorInfo {
@@ -30,4 +30,4 @@ class ElevatorScheduler {
     bool requestElevator(int floorNum, const Elevator::Direction& dir);
 };
 
-#endif // ELEVATOR_SCHEDULER_HH
+#endif // ELEVATOR_SCHEDULER_H

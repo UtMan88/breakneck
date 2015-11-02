@@ -1,5 +1,5 @@
 #include <iostream>
-#include <elevator.hh>
+#include <elevator.h>
 
 namespace {
 std::mutex ioMutex;

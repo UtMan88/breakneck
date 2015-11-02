@@ -1,5 +1,5 @@
 #include <cstdlib>
-#include <elevator_scheduler.hh>
+#include <elevator_scheduler.h>
 
 namespace {
 
