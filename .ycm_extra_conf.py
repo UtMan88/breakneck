@@ -35,7 +35,7 @@ flags = [
 #'-stdlib=libstdc++', # or libc++
 '-isystem', '/System/Library/Frameworks/Python.framework/Headers',
 '-isystem', '/Library/Developer/CommandLineTools/usr/include/c++/v1',
-'-I', 'src',
+'-I', 'include',
 ]
 
 
